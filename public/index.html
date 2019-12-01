@@ -7,39 +7,112 @@
     <title>WebSocket Chat</title>
     <style>
         canvas{
-            width: 800px !important;
+            width: 100% !important;
             height: 600px !important;
         }
+        body {
+            background: #000428;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #004e92, #000428);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #004e92, #000428); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        }
     </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 </head>
 <body>
-    <div id="systemMessage"></div>
+    <div class="container my-auto " id="contenedor">
+        <div id="systemMessage" class="alert alert-primary " role="alert" style="opacity: 0;">
+            <span id="message"></span>
+            <button id="closeButton" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
 
-    <label for="usrName">Usuario</label>
-    <input type="text" id="usrName">
-    <label for="password">Clave</label>
-    <input type="password" id="password">
-    <button id="btnLogin">Login</button>
+        <div class="row">
+            <div id="container_login" class="card text-center p-4 col-md-6 mx-auto mt-4">
+                <img src="https://cdn.worldvectorlogo.com/logos/websocket.svg" alt="Logo" class="card-img-top mx-auto m-2 rounded-circle w-50">
+                <div class="card-body">
+                    <form >
+                        <div class="form-group">
+                            <label for="usrName" class="">Usuario</label>
+                            <input type="text" id="usrName" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Clave</label>
+                            <input type="password" id="password" class="form-control">
+                        </div>
+                    </form>
+                    <button id="btnLogin" class="btn btn-primary btn-lg btn-block">Iniciar Sesión</button>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div id="container_auth" style="display: none;" class="container-fluid">
+            <div class="row">
+                <div class="form-inline">
+                    
+                    <div class="form-group mx-3">
+                        <label for="product" class="col-form-label text-light mx-2">Producto</label>
+                        <select name="product" id="product" class="form-control">
+                            <option value="0">Zapatos</option>
+                            <option value="1">Camisas</option>
+                            <option value="2">Billeteras</option>
+                        </select>
+                    </div>
 
-    <label for="txtmsg">Mensaje</label>
-    <input type="text" id="txtmsg">
-    <button id="btnSendMessage">Enviar</button>
+                    <div class="form-group mx-3">
+                        <label for="quantity" class="col-form-label text-light mx-2">Cantidad</label>
+                        <input type="number" id="quantity" class="form-control">
+                    </div>
 
-    <label for="product">Producto</label>
-    <select name="product" id="product">
-        <option value="0">Zapatos</option>
-        <option value="1">Camisas</option>
-        <option value="2">Billeteras</option>
-    </select>
-    <label for="quantity">Cantidad</label>
-    <input type="number" id="quantity">
-    <button id="btnSale">Vender</button>
+                    <button id="btnSale" class="btn btn-warning ">Vender</button>
+                    
+                </div>
+                
+            </div>
+    
+        </div>
+    
+        
+    
+        <div class="container-fluid my-3" id="chat_auth" style="display: none;">
+            <div class="row">
+                <div class="col-md-8">
+                    <canvas id="myChart" width="600" height="400"></canvas>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="form-inline">
+                        <div class="col-sm-2">
+                            <label for="txtmsg" class="col-form-label text-light">Mensaje</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="text" id="txtmsg" class="form-control">
+                        </div>
+                        <div class="col-sm-2">
+                            <button id="btnSendMessage" class="btn btn-info">Enviar</button>
+                        </div>
+                    </div>
 
-    <div id="content"></div>
-
-    <canvas id="myChart" width="400" height="400"></canvas>
+                    <div class="my-3">
+                        <div id="content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+    
     <script src="script.js"></script>
+
+    <script>
+        document.getElementById('closeButton').addEventListener('click', function(e) {
+            e.preventDefault()
+            document.getElementById('systemMessage').classList.add('animated', 'fadeOut')
+        })
+    </script>
 </body>
 </html>

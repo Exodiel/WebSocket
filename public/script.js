@@ -1,8 +1,9 @@
-let ws = null, theChart = null
-const dataChart = [5,15,12]
+let ws = null, theChart = null, userName = ''
+const dataChart = [0,0,0]
+
 
 const setSystemMessage = data => {
-    systemMessage.textContent = data
+    message.textContent = data
 }
 
 const login = async () => {
@@ -10,6 +11,7 @@ const login = async () => {
         name: usrName.value,
         password: password.value
     }
+    userName = user.name
     const header = new Headers()
     header.append('Content-type', 'application/json')
 
@@ -23,8 +25,12 @@ const login = async () => {
     switch (response.status) {
         case 200:
             data = await response.json()
-            // console.log(data)
             connectWS(data)
+            container_auth.style.display = 'block'
+            container_login.style.display = 'none'
+            myChart.style.display = 'block'
+            chat_auth.style.display = 'block'
+            systemMessage.style.opacity = '1'
             loadChart()
             break
         case 401:
@@ -34,6 +40,13 @@ const login = async () => {
             setSystemMessage('Estado no esperado: '+response.status)
             break
     }
+}
+
+function getRandomBadge() {
+    let options = ['primary','secondary','success','danger','warning','light','dark']
+    let badge = 'badge-'
+    badge += options[Math.floor(Math.random() * 7)]
+    return badge
 }
 
 
@@ -46,6 +59,7 @@ const connectWS = data => {
     ws = new WebSocket(`ws://localhost:9999/ws?uname=${usrName.value}&token=${data.token}`)
     ws.onopen = e => {
         setSystemMessage('conectado al ws correctamente')
+        console.log(userName)
     }
 
     ws.onerror = e => {
@@ -56,7 +70,14 @@ const connectWS = data => {
         const data = JSON.parse(e.data)
         switch (data.type) {
             case "message":
-                content.insertAdjacentHTML('beforeend', `<div>De: <span>${data.data_response.name}</span>, Mensaje: ${data.data_response.message}</div>`)
+                const className = userName === data.data_response.name ? 'badge badge-info' : `badge ${getRandomBadge()}`
+                content.innerHTML +=  `
+                <div class= "bg-light mb-3 rounded p-2 ">
+                    <span class="${className}">${data.data_response.name}</span>
+                    <div class="">
+                        ${data.data_response.message}
+                    </div>
+                </div>`
                 txtmsg.value = ''
                 break
             case "sale":
@@ -131,9 +152,23 @@ const loadChart = () => {
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero:true
+                        beginAtZero: true,
+                        fontSize: 20,
+                        fontColor: '#fff'
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontSize: 20,
+                        fontColor: '#fff'
                     }
                 }]
+            },
+            legend: {
+                labels: {
+                    fontColor: 'white',
+                    fontSize: 20,
+                }
             }
         }
     })

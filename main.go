@@ -103,7 +103,7 @@ func login(c echo.Context) error {
 func loadUsers() []UserRequest {
 	urs := make([]UserRequest, 0)
 
-	urs = append(urs, UserRequest{"pedro", "123"}, UserRequest{"pablo", "321"}, UserRequest{"juan", "654"})
+	urs = append(urs, UserRequest{"jipson", "123"}, UserRequest{"pablo", "321"}, UserRequest{"juan", "654"}, UserRequest{"gova", "258"}, UserRequest{"sele", "789"})
 	return urs
 }
 
